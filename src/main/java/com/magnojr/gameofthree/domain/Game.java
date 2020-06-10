@@ -4,11 +4,13 @@ package com.magnojr.gameofthree.domain;
 import com.magnojr.gameofthree.exception.InvalidMoveException;
 import com.magnojr.gameofthree.exception.InvalidStartException;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
 @Getter
+@NoArgsConstructor
 public class Game {
 
     private UUID id;
@@ -72,16 +74,12 @@ public class Game {
 
     }
 
-    public boolean isStarted() {
+    boolean isStarted() {
         return this.number != 0;
     }
 
-    public boolean isEnd() {
-        if (number == 1) {
-            return true;
-        }
-
-        return false;
+    boolean isEnd() {
+        return number == 1;
     }
 
     private int getNextNumber() {
@@ -111,11 +109,7 @@ public class Game {
             throw new InvalidMoveException("Value not accepted. Select a possible values: {-1, 0, 1} ");
         }
 
-        if (((this.number + value) % 3) == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return ((this.number + value) % 3) == 0;
     }
 
 }

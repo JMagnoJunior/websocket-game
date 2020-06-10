@@ -9,12 +9,13 @@ On each turn the player can choose if he will type the additional value or if it
 ## How to run:
 
 ### Docker
-If you have docker installed all you have to do is run the script `start_docher_script.sh`
+If you have docker installed just need to run the script: `start_docher_script.sh`
 
 
-### linux/mac you can run:
+### linux/mac you can run (local - maven):
 run the script: `start_local_mvn_script.sh` or type
 
-### On windows:
+### On windows(local - maven):
     > mvn install
     > java -jar "target/gameofthree1.0-SNAPSHOT.jar"
+

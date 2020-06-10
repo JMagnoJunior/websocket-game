@@ -19,7 +19,8 @@ function connect() {
         console.log('Connected: ' + frame);
 
         stompClient.subscribe('/user/queue/info', function (response) {
-            addInfo(response.body);
+            let info = JSON.parse(response.body)
+            addInfo(info.message);
          });
         stompClient.subscribe('/user/queue/game-data', function (response) {
             let game = JSON.parse(response.body)

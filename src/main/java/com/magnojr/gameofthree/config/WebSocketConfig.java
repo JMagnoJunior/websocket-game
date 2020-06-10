@@ -18,8 +18,8 @@ import java.util.UUID;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 
-    public static final String ENDPOINT_CONNECT = "/connect";
-    public static final String SUBSCRIBE_QUEUE = "/queue";
+    private static final String ENDPOINT_CONNECT = "/connect";
+    private static final String SUBSCRIBE_QUEUE = "/queue";
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {

@@ -2,18 +2,19 @@ package com.magnojr.gameofthree.services;
 
 import com.magnojr.gameofthree.DataProvider;
 import com.magnojr.gameofthree.domain.Game;
+import com.magnojr.gameofthree.dto.InfoMessageDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.UUID;
 
-public class UserMessageServiceTest {
+class UserMessageServiceTest {
 
 
-    SimpMessagingTemplate simpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
+    private SimpMessagingTemplate simpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
 
-    UserMessageService userMessageService = new UserMessageService(simpMessagingTemplate);
+    private UserMessageService userMessageService = new UserMessageService(simpMessagingTemplate);
 
     @Test
     void itShouldSendWaitForYourTurnMessageForUsers() {
@@ -24,7 +25,7 @@ public class UserMessageServiceTest {
         userMessageService.sendWaitForYourTurnMessage(userId);
 
         Mockito.verify(simpMessagingTemplate, Mockito.times(1))
-                .convertAndSendToUser(userId.toString(), "/queue/info", message);
+                .convertAndSendToUser(userId.toString(), "/queue/info", new InfoMessageDTO(message));
     }
 
     @Test
@@ -35,7 +36,7 @@ public class UserMessageServiceTest {
         userMessageService.sendWaitForOpponentMessage(userId);
 
         Mockito.verify(simpMessagingTemplate, Mockito.times(1))
-                .convertAndSendToUser(userId.toString(), "/queue/info", message);
+                .convertAndSendToUser(userId.toString(), "/queue/info", new InfoMessageDTO(message));
     }
 
     @Test
@@ -46,10 +47,10 @@ public class UserMessageServiceTest {
         userMessageService.sendMoveMessage(previousUser, game);
 
         Mockito.verify(simpMessagingTemplate, Mockito.times(1))
-                .convertAndSendToUser(previousUser.toString(), "/queue/info", "wait for the other player");
+                .convertAndSendToUser(previousUser.toString(), "/queue/info", new InfoMessageDTO("wait for the other player"));
 
         Mockito.verify(simpMessagingTemplate, Mockito.times(1))
-                .convertAndSendToUser(game.getCurrentPlayer().getId().toString(), "/queue/info", "It is your turn!");
+                .convertAndSendToUser(game.getCurrentPlayer().getId().toString(), "/queue/info", new InfoMessageDTO("It is your turn!"));
 
         verifySendGameData(game);
     }
@@ -63,11 +64,11 @@ public class UserMessageServiceTest {
 
         Mockito.verify(simpMessagingTemplate, Mockito.times(1))
                 .convertAndSendToUser(game.getPlayer1().getId().toString(), "/queue/info",
-                        "You have started the game. Wait for your turn");
+                        new InfoMessageDTO("You have started the game. Wait for your turn"));
 
         Mockito.verify(simpMessagingTemplate, Mockito.times(1))
                 .convertAndSendToUser(game.getCurrentPlayer().getId().toString(), "/queue/info",
-                        "The opponent did the first move. Now it is your turn!");
+                        new InfoMessageDTO("The opponent did the first move. Now it is your turn!"));
 
         verifySendGameData(game);
     }
@@ -80,11 +81,11 @@ public class UserMessageServiceTest {
 
         Mockito.verify(simpMessagingTemplate, Mockito.times(1))
                 .convertAndSendToUser(game.getPlayer1().getId().toString(), "/queue/info",
-                        "Game Created. Your opponent is: " + game.getPlayer2().getName());
+                        new InfoMessageDTO("Game Created. Your opponent is: " + game.getPlayer2().getName()));
 
         Mockito.verify(simpMessagingTemplate, Mockito.times(1))
                 .convertAndSendToUser(game.getPlayer2().getId().toString(), "/queue/info",
-                        "Game Created. Your opponent is: " + game.getPlayer1().getName());
+                        new InfoMessageDTO("Game Created. Your opponent is: " + game.getPlayer1().getName()));
 
         verifySendGameData(game);
 

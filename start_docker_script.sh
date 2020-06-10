@@ -2,4 +2,4 @@
 
 DOCKER_BUILDKIT=1 docker build -t gameofthree-service:1.0 .
 
-docker run -it gameofthree-service:1.0 /bin/bash
+docker run  -p 8080:8080 gameofthree-service:1.0
