@@ -22,3 +22,5 @@ run the script: `start_local_mvn_script.sh` or type
 
 ### Problems not covered on this MVP:
     1 - If a user lose the connection during the game, the list of game will become very messy.
+    The player will not be informed that the oppoonent is disconnected. 
+    
