@@ -19,3 +19,6 @@ run the script: `start_local_mvn_script.sh` or type
     > mvn install
     > java -jar "target/gameofthree1.0-SNAPSHOT.jar"
 
+
+### Problems not covered on this MVP:
+    1 - If a user lose the connection during the game, the list of game will become very messy.

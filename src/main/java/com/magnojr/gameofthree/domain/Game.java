@@ -74,11 +74,11 @@ public class Game {
 
     }
 
-    boolean isStarted() {
+    public boolean isStarted() {
         return this.number != 0;
     }
 
-    boolean isEnd() {
+    public boolean isEnd() {
         return number == 1;
     }
 
