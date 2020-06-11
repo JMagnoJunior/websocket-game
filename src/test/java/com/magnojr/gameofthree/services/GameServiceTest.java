@@ -16,15 +16,15 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
 
-public class GameServiceTest {
+class GameServiceTest {
 
-    UserMessageService userMessageService = Mockito.mock(UserMessageService.class);
+    private UserMessageService userMessageService = Mockito.mock(UserMessageService.class);
 
 
     private final HashMap<UUID, Game> games = Mockito.mock(HashMap.class);
     private final Queue<Player> waitingList = Mockito.mock(LinkedList.class);
 
-    GameService gameService = new GameService(userMessageService, waitingList, games);
+    private GameService gameService = new GameService(userMessageService, waitingList, games);
 
     @Test
     void itShouldAddUserToWaitingListWhenTheFirstUserLoadTheGame() {
@@ -58,7 +58,7 @@ public class GameServiceTest {
     void itShouldStartAGameWhenOnePlayerProvideTheNumber() {
 
         Game game = DataProvider.createNewGame();
-        int startNumber = 56;
+        int startNumber = DataProvider.getRandomValue(1, Integer.MAX_VALUE);
 
         StartGameMoveDTO startGameMoveDTO = new StartGameMoveDTO(game.getId(), startNumber);
 
@@ -74,7 +74,7 @@ public class GameServiceTest {
     @Test
     void itShouldSendErrorMessageWhenPlayerStartAGameAlreadyStarted() {
         Game game = DataProvider.createNewGame();
-        final int startNumber = 56;
+        final int startNumber = DataProvider.getRandomValue(1, Integer.MAX_VALUE);
         game.startGame(game.getPlayer1().getId(), startNumber);
 
         StartGameMoveDTO startGameMoveDTO = new StartGameMoveDTO(game.getId(), startNumber);
@@ -90,7 +90,7 @@ public class GameServiceTest {
     @Test
     void itShouldUpdateTheGameWhenPlayerMove() {
         Game game = DataProvider.createNewGame();
-        final int number = 56;
+        final int number = DataProvider.getRandomValue(1, Integer.MAX_VALUE);
         game.startGame(game.getPlayer1().getId(), number);
 
         MoveDTO moveDTO = new MoveDTO(game.getId());
@@ -105,7 +105,7 @@ public class GameServiceTest {
     }
 
     @Test
-    void itShouldSendErrorMessageWhenTheAPayerMakesAMoveOnAGameNotStarted() {
+    void itShouldSendErrorMessageWhenTheAPlayerMakesAMoveOnAGameNotStarted() {
         Game game = DataProvider.createNewGame();
 
         MoveDTO moveDTO = new MoveDTO(game.getId());
@@ -116,5 +116,7 @@ public class GameServiceTest {
         Mockito.verify(userMessageService, Mockito.times(1)).sendErrorMessage(Mockito.any(), Mockito.any());
 
     }
+
+
 
 }

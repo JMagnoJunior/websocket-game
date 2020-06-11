@@ -32,6 +32,10 @@ public class Game {
             throw new InvalidStartException("Game already started");
         }
 
+        if (number <= 0) {
+            throw new InvalidStartException("Please, provide a number bigger than 0");
+        }
+
         this.number = number;
         this.currentPlayer = starter.equals(player1.getId()) ? player2 : player1;
     }

@@ -18,7 +18,7 @@ public class GameTest {
 
         Game game = DataProvider.createNewGame();
         UUID starterUserId = game.getPlayer2().getId();
-        final int number = 56;
+        final int number = DataProvider.getRandomValue(1, Integer.MAX_VALUE);
 
         game.startGame(starterUserId, number);
 
@@ -30,7 +30,7 @@ public class GameTest {
     void itShouldFailWhenStartingAStartedGame() {
         Game game = DataProvider.createNewGame();
         UUID starterUserId = game.getPlayer2().getId();
-        final int number = 56;
+        final int number = DataProvider.getRandomValue(1, Integer.MAX_VALUE);
 
         game.startGame(starterUserId, number);
 
@@ -40,9 +40,31 @@ public class GameTest {
     }
 
     @Test
+    void itShouldSendErrorMessageWhenThePayerProvidesANegativeNumberForStartTheGame() {
+        Game game = DataProvider.createNewGame();
+        UUID starterUserId = game.getPlayer2().getId();
+        final int negativeNumber = DataProvider.getRandomValue(1, Integer.MAX_VALUE) * -1;
+
+        Assertions.assertThrows(InvalidStartException.class, () -> game.startGame(starterUserId, negativeNumber));
+
+    }
+
+    @Test
+    void itShouldSendErrorMessageWhenThePayerProvidesNumberZeroForStartTheGame() {
+        Game game = DataProvider.createNewGame();
+        UUID starterUserId = game.getPlayer2().getId();
+        final int ZERO = 0;
+
+        Assertions.assertThrows(InvalidStartException.class, () -> game.startGame(starterUserId, ZERO));
+
+    }
+
+
+    @Test
     void itShouldUpdateTheNumberAndCurrentPlayerWhenMoveAStartedGame() {
         Game game = DataProvider.createNewGame();
-        final int number = 56;
+        final int number = DataProvider.getRandomValue(1, Integer.MAX_VALUE);
+
         game.startGame(game.getPlayer1().getId(), number);
 
         game.move();
@@ -54,13 +76,14 @@ public class GameTest {
     @Test
     void itShouldNotAllowMoveWhenGameIsNotStarted() {
         Game game = DataProvider.createNewGame();
-        Assertions.assertThrows(InvalidMoveException.class, () -> game.move());
+        Assertions.assertThrows(InvalidMoveException.class, game::move);
     }
 
     @Test
     void itShouldEndTheGameWhenPlayingInAutomaticModeAndNumberReach1() {
         Game game = DataProvider.createNewGame();
         final int number = 56;
+
         game.startGame(game.getPlayer1().getId(), number);
 
         while (!game.isEnd()) {
